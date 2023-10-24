@@ -45,7 +45,8 @@ if (files.length > 0 && files.length + formData.imageUrls.length < 7 ){
     });
     setImageUploadError(false);
     setUploading(false);
-  }).catch((error) => {
+  })
+  .catch((error) => {
     setImageUploadError('Image upload failed (2 mb max per image)');
     setUploading(false);
   });
@@ -82,9 +83,9 @@ const storeImage = async (file) => {
 
 const handleRemoveImage = (index) => {
   setFormData({
-    ...formData,
-    imageUrls: formData.imageUrls.filter((_, i) => i !== index),
-  });
+      ...formData,
+      imageUrls: formData.imageUrls.filter((_, i) => i !== index),
+    });
   }
 
   const handleChange = (e) => {
