@@ -15,13 +15,13 @@ export default function CreateListing()  {
     description: '',
     address: '',
     type: 'rent',
-    bedrooms: 1,
+    bedrooms: 0,
     bathrooms: 1,
     regularPrice: 50,
     discountPrice: 0,
     offer: false,
     parking: false,
-    furniture: false,
+    furnished: false,
   });
   const [imageUploadError, setImageUploadError] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -46,14 +46,14 @@ if (files.length > 0 && files.length + formData.imageUrls.length < 7 ){
     setImageUploadError(false);
     setUploading(false);
   })
-  .catch((error) => {
+  .catch((err) => {
     setImageUploadError('Image upload failed (2 mb max per image)');
     setUploading(false);
   });
 } else {
   setImageUploadError('You can only upload 6 images per listing')
   setUploading(false);
-}
+  }
 };
 
 const storeImage = async (file) => {
@@ -139,6 +139,7 @@ const handleRemoveImage = (index) => {
         }),
       });
       const data = await res.json();
+      console.log(data);
       setLoading(false);
       if(data.success === false){
         setError(data.message);
@@ -150,13 +151,12 @@ const handleRemoveImage = (index) => {
     }
   }
 
-
   return (
     <main className='p-3 max-w-4xl mx-auto'>
       <h1 className='text-3xl font-semibold text-center my-7'>
         Create a Listing
         </h1>
-      <form onChange={handleSubmit}
+      <form onSubmit={handleSubmit}
       className='flex flex-col sm:flex-row gap-4'>
         <div className='flex flex-col gap-4 flex-1'>
           <input

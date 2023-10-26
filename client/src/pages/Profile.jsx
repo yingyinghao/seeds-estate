@@ -2,7 +2,16 @@ import { useSelector } from "react-redux";
 import { useRef, useState, useEffect } from 'react'
 import { ref, getStorage, uploadBytesResumable, getDownloadURL} from 'firebase/storage'
 import { app } from '../firebase';
-import {updateUserStart, updateUserSuccess, updateUserFailure, deleteUserFailure, deleteUserStart, deleteUserSuccess, signOutUserStart, signOutUserSuccess, signOutUserFailure} from '../redux/user/userSlice'
+import {
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailure,
+  deleteUserFailure,
+  deleteUserStart,
+  deleteUserSuccess,
+  signOutUserStart,
+}
+     from '../redux/user/userSlice'
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -50,8 +59,8 @@ export default function Profile() {
       setFileUploadError(true);
     },
     ()=>{
-      getDownloadURL(uploadTask.snapshot.ref).then
-      ((downloadURL) =>
+      getDownloadURL(uploadTask.snapshot.ref)
+      .then((downloadURL) =>
         setFormData({...formData, avatar: downloadURL})
       );
      }
@@ -82,7 +91,6 @@ const handleSubmit = async (e) => {
     setUpdateSuccess(true);
   }catch(error){
     dispatch(updateUserFailure(error.message));
-
   }
 };
 
@@ -98,10 +106,9 @@ try{
     return;
   }
   dispatch(deleteUserSuccess(data));
-
 }catch(error){
   dispatch(updateUserFailure(error.message));
-}
+  }
 }
 
 const handleSignOut = async() => {
@@ -110,12 +117,12 @@ try{
   const res = await fetch('/api/auth/signout');
   const data = await res.json();
   if(data.success === false){
-    dispatch(signOutUserFailure(data.message));
+    dispatch(deleteUserFailure(data.message));
     return;
   }
-  dispatch(signOutUserSuccess(data));
+  dispatch(deleteUserSuccess(data));
 }catch(error){
-  dispatch(signOutUserFailure(error.message));
+  dispatch(deleteUserFailure(error.message));
 }
 }
 
@@ -130,7 +137,7 @@ const handleShowListings = async() => {
       return;
     }
     setUserListings(data);
-  } catch {
+  } catch(error) {
     setShowListingsError(true);
   }
 }
@@ -158,7 +165,12 @@ const handleListingDelete = async(listingId) => {
     <h1 className = 'text-3xl font-semibold text-center my-7'>Profile
      </h1>
     <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
-      <input onChange={(e)=>setFile(e.target.files[0])} type="file" ref={fileRef} hidden accept='image/*' />
+      <input onChange={(e)=>setFile(e.target.files[0])}
+      type="file"
+      ref={fileRef}
+      hidden
+      accept='image/*'
+      />
       <img
       onClick={() => fileRef.current.click()}
        src={formData.avatar || currentUser.avatar}
@@ -192,7 +204,7 @@ const handleListingDelete = async(listingId) => {
        onChange={handleChange}
        />
         <input
-        type='text'
+        type='password'
         placeholder='password'
         id='password'
         className="border p-3 rounded-lg"
@@ -210,11 +222,16 @@ const handleListingDelete = async(listingId) => {
        </div>
        <p className="text-red-700 mt-5">{error ? error : ''}</p>
        <p className="text-green-700 mt-5">{updateSuccess ? 'User updated successfully!' : ''}</p>
-       <button onClick={handleShowListings} className="txte-green-700 w-full">Show Listings</button>
-      <p className="text-red-700 mt-5">{showListingsError ? 'Error showing listings' : ''}</p>
-        {userListings && userListings.length > 0 &&
+       <button onClick={handleShowListings} className="text-green-700 w-full">Show Listings</button>
+      <p className="text-red-700 mt-5">
+        {showListingsError ? 'Error showing listings' : ''}
+        </p>
+
+        {userListings && userListings.length > 0 && (
         <div className="flex flex-col gap-4">
-          <h1 className="text-center mt-7 text-2xl font-semibold">Your Listings</h1>
+          <h1 className="text-center mt-7 text-2xl font-semibold">
+            Your Listings
+            </h1>
             {userListings.map((listing) =>(
               <div
               key={listing._id}
@@ -226,21 +243,26 @@ const handleListingDelete = async(listingId) => {
                 className="'h-16 w-16 object-contain"
                 />
               </Link>
-              <Link className="text-slate-700 font-semibold flex-1 hover:underline truncate flex-1"
+              <Link
+              className="text-slate-700 font-semibold flex-1 hover:underline truncate flex-1"
                 to={`/listing/${listing._id}`}
                 >
                 <p> {listing.name} </p>
               </Link>
-      <div className="flex flex-col item-center">
-      <button onClick={()=>handleListingDelete(listing._id)} className="text-red-700">Delete</button>
-      <Link to={`/update-listing/${listing._id}`}>
-      <button className="text-green-700">Edit</button>
-      </Link>
-    </div>
-  </div>
-  ))}
-</div>
-}
-</div>
-)
+
+                <div className="flex flex-col item-center">
+                <button
+                onClick={()=>handleListingDelete(listing._id)}
+                className="text-red-700 uppercase">Delete
+                </button>
+                <Link to={`/update-listing/${listing._id}`}>
+                <button className="text-green-700">Edit</button>
+                </Link>
+            </div>
+        </div>
+      ))}
+     </div>
+    )}
+   </div>
+  )
 }

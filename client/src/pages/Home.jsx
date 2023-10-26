@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css/bundle'
 import SwiperCore from 'swiper';
-import { Navigation } from 'swiper/navigate';
+import { Navigation } from 'swiper/modules';
 import ListingItem from '../components/ListingItem';
 
 
@@ -23,6 +23,7 @@ useEffect(() => {
       }catch(error){
         console.log(error);
       }
+    };
 
 const fetchRentListings = async () => {
 try{
@@ -48,12 +49,12 @@ fetchOfferListings();
 
 
   return (
-<div>
+    <div>
   {/* top */}
   <div className='flex flex-col gap-6 p-28 px-3 max-w-6xl mx-auto'>
     <h1 className='text-slate-700 font-bold text-3xl lg:text-6xl'>
       Find your next
-    <span className='text-slate-500'>perfect</span>
+    <span className='text-slate-500'> perfect</span>
   <br />
   place with ease
   </h1>
@@ -70,11 +71,13 @@ fetchOfferListings();
 
   {/* swiper */}
   <Swiper navigation>
-    {offerListings && offerListings.length > 0 && offerListings.map((listing) => (
+    {offerListings &&
+     offerListings.length > 0 &&
+     offerListings.map((listing) => (
       <SwiperSlide>
         <div
         style={{
-          background: `url(${listing.images[0]}) center no-repeat`,
+          background: `url(${listing.imageUrls[0]}) center no-repeat`,
           backgroundSize: 'cover',
         }}
         className='h-[500px]'

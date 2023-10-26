@@ -1,5 +1,6 @@
 import { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom'
+import ListingItem from '../components/ListingItem';
 
 export const handleSubmit = (e) => {
 }
@@ -86,9 +87,8 @@ export default function Search(){
       setSidebardata({
         ...sidebardata,
         [e.target.id]:
-        e.target.checked || e.target.value === 'true' ? true : false
+        e.target.checked || e.target.value === 'true' ? true : false,
     })
-    }
   };
 
   if(e.tatrget.id === 'sort_order'){
@@ -96,7 +96,7 @@ export default function Search(){
     const sort = e.target.value.split('_')[0] || 'created_at';
     const order = e.target.value.split('_')[1] || "desc";
     setSidebardata({...sidebardata, sort, order})
-
+  }
   }
 
   const handleSubmit = (e) => {
@@ -150,28 +150,28 @@ export default function Search(){
                 <div className="flex gap-2">
                   <input type="checkbox" id="all"
                   className="w-5"
-                  onchange = {handleChange}
+                  onChange = {handleChange}
                   checked={sidebardata.type='all'}/>
                   <span> Rent & Sale</span>
                 </div>
                  <div className="flex gap-2">
                   <input type="checkbox" id="rent"
                   className="w-5"
-                  onchange = {handleChange}
+                  onChange = {handleChange}
                   checked={sidebardata.type='rent'}/>
                   <span> Rent</span>
                 </div>
                  <div className="flex gap-2">
                   <input type="checkbox" id="sale"
                   className="w-5"
-                  onchange = {handleChange}
+                  onChange = {handleChange}
                   checked={sidebardata.type='sale'}/>
                   <span>  Sale</span>
                 </div>
                  <div className="flex gap-2">
                   <input type="checkbox" id="offer"
                   className="w-5"
-                  onchange = {handleChange}
+                  onChange = {handleChange}
                   checked={sidebardata.type='offer'}/>
                   <span> Offer </span>
                 </div>
@@ -190,14 +190,14 @@ export default function Search(){
                 <div className="flex gap-2">
                   <input type="checkbox" id="parking"
                   className="w-5"
-                  onchange = {handleChange}
+                  onChange = {handleChange}
                   checked={sidebardata.type='parking'}/>
                   <span> Parking </span>
                 </div>
                  <div className="flex gap-2">
                   <input type="checkbox" id="furnished"
                   className="w-5"
-                  onchange = {handleChange}
+                  onChange = {handleChange}
                   checked={sidebardata.type='furnished'}/>
                   <span> furnished</span>
                 </div>
