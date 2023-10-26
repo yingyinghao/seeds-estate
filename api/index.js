@@ -31,6 +31,11 @@ app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
 
+// console.log(" app._router.stack - ", app._router.stack)
+// console.log(" app.routes - ", app.routes)
+// console.log("userRouter.stack - ", userRouter.stack)
+
+
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
